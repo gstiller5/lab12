@@ -34,6 +34,6 @@ public class Client {
       server.close();
     } catch (IOException e) {
       e.printStackTrace();
-    }
+    } 
   }
 }

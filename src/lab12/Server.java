@@ -18,13 +18,26 @@ public class Server {
 
     try {
       // Create a ServerSocket and wait for a Client to connect
-      ServerSocket server = new ServerSocket(4000);
+      @SuppressWarnings("resource")
+	ServerSocket server = new ServerSocket(4000);
       Socket connection = server.accept();
       // Make both connection steams available 
       ObjectOutputStream output = new ObjectOutputStream(connection.getOutputStream());
       ObjectInputStream input = new ObjectInputStream(connection.getInputStream());
       
       // TODO: Add a loop that reads from one connected client and
+      String message = "";
+      int i = 0;
+      while(true) {
+    	  message = (String) input.readObject();
+    	  System.out.println(message);
+    	  if (i == 5) {
+    		  output.writeObject("Goodbye");
+    		  break;
+    	  }
+    	  output.writeObject("Hello Client");
+    	  i++;
+      }
       // write backs "Hello Client".  Write back Goodbye to terminate
       // both the client and server.  Print whatever the Client writes.
       
@@ -32,6 +45,9 @@ public class Server {
       // Close the connection
       connection.close();
     } catch (IOException e) {
-    }
+    } catch (ClassNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
   }
 }
